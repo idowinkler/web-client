@@ -1,0 +1,69 @@
+.profile {
+  @apply transition-all;
+
+  background-color: #132222;
+  height: 100vh;
+  width: 0rem;
+  display: flex;
+  padding: 0rem;
+  flex-direction: column;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+}
+
+.open {
+  width: 23rem;
+}
+
+.innerContainer {
+  padding: 1rem;
+}
+
+.profileContent {
+  @apply flex flex-col;
+  margin-top: 5rem;
+}
+
+.profileTitle {
+  @apply flex justify-between;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.profilePicture {
+  width: 12rem;
+  min-width: 12rem;
+  height: 12rem;
+  margin: 0px 72px;
+}
+
+.username {
+  text-align: center;
+  width: 21rem;
+}
+
+.propertiesContainer {
+  margin-top: 3rem;
+}
+
+.icon {
+  @apply transition-all;
+  width: 1.75rem;
+  margin-right: 1rem;
+}
+
+.icon:hover {
+  filter: brightness(0.7);
+  cursor: pointer;
+}
+.icon:active {
+  filter: brightness(0.5);
+}
+
+.input {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
