@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  direction: rtl;
+  font-family: Rubik;
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  color: rgba(255, 255, 255, 0.87);
+
+  margin: 0;
+  padding: 0;
+
+}
+
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+input {
+  background-color: transparent;
+  border-bottom: 1px solid #a8b2c4;
+  outline: none;
+
+}
