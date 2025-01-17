@@ -19,8 +19,6 @@ export const fetchRequest = async (
       },
     });
 
-    console.log(response);
-
     if (response.ok) {
       return response.json();
     }
