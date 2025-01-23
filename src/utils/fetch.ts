@@ -1,5 +1,4 @@
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ODdkZjI2ZWMzMjljZGU0Yzk5MTk5NSIsInRpbWVzdGFtcCI6MTczNjk1NzczOTkwNSwiaWF0IjoxNzM2OTU3NzM5LCJleHAiOjE3Mzc1NjI1Mzl9.PEqATaZbRGy-JcsvnpIFEK9jCrp3ubetJ8ptjG6FhRE";
+const accessToken = localStorage.getItem("accessToken") || "";
 
 export const fetchRequest = async (
   url: string,
@@ -15,12 +14,17 @@ export const fetchRequest = async (
       body,
       headers: {
         ...headers,
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     });
 
     if (response.ok) {
-      return response.json();
+      try {
+        return await response.json();
+      } catch (error) {
+        console.error("Failed to parse JSON", error);
+        return response;
+      }
     }
 
     throw new Error(`fetch failed with status ${response.status}`);
