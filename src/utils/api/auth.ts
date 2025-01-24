@@ -1,10 +1,8 @@
 import { UserData } from "../../types/entities/user";
 import { fetchRequest } from "../fetch";
 
-const serverUrl = "http://localhost:3000";
-
 export const register = async (user: UserData) => {
-  const response = await fetchRequest(`${serverUrl}/auth/register`, {
+  const response = await fetchRequest(`/auth/register`, {
     method: "POST",
     body: JSON.stringify(user),
   });
@@ -16,7 +14,7 @@ export const login = async (
   email: UserData["email"],
   password: UserData["password"]
 ) => {
-  const response = await fetchRequest(`${serverUrl}/auth/login`, {
+  const response = await fetchRequest(`/auth/login`, {
     method: "POST",
     body: JSON.stringify({ email, password }),
   });
@@ -25,7 +23,7 @@ export const login = async (
 };
 
 export const logout = async (refreshToken: string) => {
-  const response = await fetchRequest(`${serverUrl}/auth/logout`, {
+  const response = await fetchRequest(`/auth/logout`, {
     method: "POST",
     body: JSON.stringify({ refreshToken }),
   });

@@ -1,36 +1,30 @@
-const accessToken = localStorage.getItem("accessToken") || "";
+import axios from "axios";
+
+export const api = axios.create({
+  baseURL: "http://localhost:3000",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export const fetchRequest = async (
   url: string,
-  {
-    method,
-    body,
-    headers = { "Content-Type": "application/json" },
-  }: RequestInit
+  { method, body }: RequestInit
 ) => {
   try {
-    const response = await fetch(url, {
+    const response = await api.request({
+      url,
       method,
-      body,
-      headers: {
-        ...headers,
-        Authorization: `Bearer ${accessToken}`,
-      },
+      data: body,
     });
 
-    if (response.ok) {
-      try {
-        return await response.json();
-      } catch (error) {
-        console.error("Failed to parse JSON", error);
-        return response;
-      }
-    }
-
-    throw new Error(`fetch failed with status ${response.status}`);
+    return response.data;
   } catch (error) {
-    if (error instanceof Error) {
+    if (axios.isAxiosError(error)) {
       console.error("fetch failed", error.message);
+      throw error;
+    } else {
+      console.error("An unexpected error occurred", error);
       throw error;
     }
   }

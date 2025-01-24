@@ -1,9 +1,17 @@
-import { useContext, createContext, useState } from "react";
+import {
+  useContext,
+  createContext,
+  useState,
+  useLayoutEffect,
+  useCallback,
+} from "react";
 import { UserData } from "../../types/entities/user";
 import { useNavigate } from "react-router-dom";
 import { useRegister } from "../../utils/customHooks/mutations/useRegister";
 import { useLogin } from "../../utils/customHooks/mutations/useLogin";
 import { useLogout } from "../../utils/customHooks/mutations/useLogout";
+import { api } from "../../utils/fetch";
+import axios from "axios";
 
 interface AuthContextType {
   user: UserData | null;
@@ -52,7 +60,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  const logout = () => {
+  const logout = useCallback(() => {
     const refreshToken = localStorage.getItem("refreshToken") || "";
     logoutMutation(refreshToken, {
       onSuccess: () => {
@@ -66,7 +74,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         console.error(err);
       },
     });
-  };
+  }, [logoutMutation, navigate]);
+
+  useLayoutEffect(() => {
+    api.interceptors.request.use(
+      (config) => {
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    api.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      async (error) => {
+        const originalRequest = error.config;
+        if (error.response.status === 403 && !originalRequest._retry) {
+          originalRequest._retry = true;
+          try {
+            const refreshToken = localStorage.getItem("refreshToken");
+            const { data } = await api.post(`/refresh-token`, { refreshToken });
+            const { accessToken, refreshToken: newRefreshToken } = data;
+            setToken(accessToken);
+            localStorage.setItem("refreshToken", newRefreshToken);
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            return axios.create(originalRequest);
+          } catch (err) {
+            console.error("Refresh token request failed", err);
+            logout();
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+  }, [token, logout]);
 
   return (
     <AuthContext.Provider value={{ user, token, register, login, logout }}>
