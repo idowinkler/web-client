@@ -11,7 +11,6 @@ import { useRegister } from "../../utils/customHooks/mutations/useRegister";
 import { useLogin } from "../../utils/customHooks/mutations/useLogin";
 import { useLogout } from "../../utils/customHooks/mutations/useLogout";
 import { api } from "../../utils/fetch";
-import axios from "axios";
 
 interface AuthContextType {
   user: UserData | null;
@@ -77,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [logoutMutation, navigate]);
 
   useLayoutEffect(() => {
-    api.interceptors.request.use(
+    const requestInterceptor = api.interceptors.request.use(
       (config) => {
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
@@ -89,7 +88,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     );
 
-    api.interceptors.response.use(
+    return () => {
+      api.interceptors.request.eject(requestInterceptor);
+    };
+  }, [token]);
+
+  useLayoutEffect(() => {
+    const responseInterceptor = api.interceptors.response.use(
       (response) => {
         return response;
       },
@@ -99,12 +104,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           originalRequest._retry = true;
           try {
             const refreshToken = localStorage.getItem("refreshToken");
-            const { data } = await api.post(`/refresh-token`, { refreshToken });
+            const { data } = await api.post(`/auth/refresh-token`, {
+              refreshToken,
+            });
             const { accessToken, refreshToken: newRefreshToken } = data;
             setToken(accessToken);
+            localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", newRefreshToken);
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-            return axios.create(originalRequest);
+            api.defaults.headers.common[
+              "Authorization"
+            ] = `Bearer ${accessToken}`;
+            return api(originalRequest);
           } catch (err) {
             console.error("Refresh token request failed", err);
             logout();
@@ -113,7 +123,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         return Promise.reject(error);
       }
     );
-  }, [token, logout]);
+
+    return () => {
+      api.interceptors.response.eject(responseInterceptor);
+    };
+  }, [logout]);
 
   return (
     <AuthContext.Provider value={{ user, token, register, login, logout }}>
