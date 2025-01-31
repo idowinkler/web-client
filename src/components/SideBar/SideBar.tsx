@@ -1,17 +1,20 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import Style from "./SideBar.module.css";
 import Profile from "../Profile/Profile";
 import SideBarButton from "./SideBarButton/SideBarButton";
 import postsIcon from "../../assets/post.svg";
 import userIcon from "../../assets/user.svg";
+import logoutIcon from "../../assets/logout.svg";
 import { useSelectedUserId } from "../SelectedUserContext/SelectedUserContext";
 import { useSelectedUser } from "../../utils/customHooks/queries/useSelectedUser";
+import { useAuth } from "../AuthContext";
 
 interface SideBarProps {}
 
 const SideBar: React.FC<SideBarProps> = ({}) => {
   const { setSelectedUserId } = useSelectedUserId();
   const { data: selectedUser } = useSelectedUser();
+  const { logout } = useAuth();
 
   const isUserProfileOpen = !!selectedUser;
 
@@ -21,12 +24,9 @@ const SideBar: React.FC<SideBarProps> = ({}) => {
         <SideBarButton name="פוסטים" iconSrc={postsIcon} />
         <SideBarButton
           iconSrc={userIcon}
-          onClick={() =>
-            setSelectedUserId(
-              selectedUser ? undefined : "6787df26ec329cde4c991995"
-            )
-          }
+          onClick={() => setSelectedUserId(selectedUser?._id)}
         />
+        <SideBarButton iconSrc={logoutIcon} onClick={logout} />
       </div>
       <Profile isOpen={isUserProfileOpen} />
     </>

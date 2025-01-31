@@ -1,10 +1,10 @@
 .sidebar {
-    @apply transition-all;
-    background-color: #223030;
-    height: 100vh;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
+  @apply transition-all;
+  background-color: #223030;
+  height: 100vh;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
 }

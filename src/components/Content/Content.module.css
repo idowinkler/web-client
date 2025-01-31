@@ -1,0 +1,34 @@
+.content {
+  background-color: #b8b2a7;
+  flex: 1;
+}
+
+.contentTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+}
+
+.scrollContainer {
+  max-height: 90vh;
+  overflow-y: scroll;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+  background: #645c5c;
+  border-radius: 10px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb:hover {
+  background: #534b4b;
+}
