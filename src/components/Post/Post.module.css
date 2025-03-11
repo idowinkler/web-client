@@ -1,0 +1,25 @@
+.post {
+  @apply transition-all;
+  display: flex;
+  margin: 1rem 1rem;
+  background-color: #726f6f;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: default;
+  flex-direction: column;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1), /* Soft top shadow */
+              inset 0 -4px 8px rgba(0, 0, 0, 0.05); /* Soft bottom shadow */
+}
+
+.post:hover {
+  background-color: #645c5c;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.userIcon {
+  height: 2rem;
+}
