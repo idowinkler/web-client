@@ -21,7 +21,7 @@ const SideBar: React.FC<SideBarProps> = ({}) => {
   return (
     <>
       <div className={Style.sidebar}>
-        <SideBarButton name="פוסטים" iconSrc={postsIcon} />
+        <SideBarButton name="פוסטים" iconSrc={postsIcon} onClick={() => setSelectedUserId(undefined)}/>
         <SideBarButton
           iconSrc={userIcon}
           onClick={() => setSelectedUserId(selectedUser?._id)}

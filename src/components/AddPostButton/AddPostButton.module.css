@@ -1,0 +1,12 @@
+.icon {
+  @apply transition-all;
+  height: 2rem;
+  width: 2rem;
+  margin-right: 0.5rem;
+}
+
+.icon:hover {
+  filter: brightness(0.7);
+  cursor: pointer;
+  transform: scale(1.1);
+}

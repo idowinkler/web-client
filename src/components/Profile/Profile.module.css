@@ -1,6 +1,5 @@
 .profile {
   @apply transition-all;
-
   background-color: #132222;
   height: 100vh;
   width: 0rem;

@@ -10,6 +10,7 @@ export const useRefetchQueries = () => {
 
   const refetchUserById = (userId: UserEntity["_id"]) =>
     refetchQuery([QUERY_KEYS.USER_BY_ID(userId)]);
+  const refetchPosts = () => refetchQuery([QUERY_KEYS.POSTS]);
 
-  return { refetchUserById };
+  return { refetchUserById, refetchPosts };
 };

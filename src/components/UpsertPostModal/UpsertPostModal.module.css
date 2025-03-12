@@ -1,30 +1,3 @@
-.container {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #b8b2a7;
-}
-
-.form {
-  background-color: #1f1f1f;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  max-width: 400px;
-  color: #fff;
-}
-
-.title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #32a852;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
 .inputGroup {
   margin-bottom: 1rem;
 }
@@ -52,8 +25,36 @@
   box-shadow: 0 0 0 2px rgba(50, 168, 82, 0.5);
 }
 
+p {
+  font-size: 1rem;
+}
+
+.form {
+  font-weight: 400;
+}
+
+textarea {
+  height: 150px;
+  resize: none;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: #645c5c;
+  border-radius: 10px;
+}
+
 .button {
-  width: 100%;
+  @apply transition-all;
   padding: 0.75rem;
   background-color: #32a852;
   border: none;
@@ -65,15 +66,10 @@
 }
 
 .button:hover {
-  background-color: #28a745;
+  background-color: #24793b;
 }
 
-.formRow {
+.buttonContainer {
   display: flex;
-  gap: 0.5rem;
-}
-
-.link {
-  color: #32a852;
-  text-decoration: underline;
+  justify-content: flex-end;
 }

@@ -1,0 +1,38 @@
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 50;
+}
+
+.modalContent {
+  background-color: #1f1f1f;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  border: 1px solid #689675;
+  font-size: 1.25rem;
+}
+
+.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.open .modalContent {
+  transform: translateY(0);
+  opacity: 1;
+}
