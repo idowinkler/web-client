@@ -5,7 +5,7 @@ import {
   useLayoutEffect,
   useCallback,
 } from "react";
-import { UserData } from "../../types/entities/user";
+import { UserData, UserRegisterData } from "../../types/entities/user";
 import { useNavigate } from "react-router-dom";
 import { useRegister } from "../../utils/customHooks/mutations/useRegister";
 import { useLogin } from "../../utils/customHooks/mutations/useLogin";
@@ -15,7 +15,7 @@ import { api } from "../../utils/fetch";
 interface AuthContextType {
   user: UserData | null;
   token: string;
-  register: (user: UserData) => void;
+  register: (user: UserRegisterData) => void;
   login: (user: UserData) => void;
   logout: () => void;
 }
@@ -32,10 +32,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const { mutate: loginMutation } = useLogin();
   const { mutate: logoutMutation } = useLogout();
 
-  const register = (user: UserData) => {
+  const register = (user: UserRegisterData) => {
     registerMutation(user, {
       onSuccess: ({ refreshTokens, ...userData }) => {
-        console.log("register success", refreshTokens, userData);
         setUser(userData);
         navigate("/login");
       },
@@ -47,13 +46,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = (user: UserData) => {
     loginMutation(user, {
-      onSuccess: ({ accessToken, refreshToken }) => {
+      onSuccess: ({ accessToken, refreshToken, ...userData }) => {
         setToken(accessToken);
+        setUser(userData);
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         navigate("/");
       },
       onError: (err) => {
+        // TODO: add toast message
         console.error(err);
       },
     });
