@@ -7,9 +7,10 @@ import commentsIcon from "../../assets/comments.svg";
 import heartIcon from "../../assets/heart.svg";
 import fullHeartIcon from "../../assets/fullHeart.svg";
 import { PostEntity } from "../../types/entities/post";
-import { useSelectedUserId } from "../SelectedUserContext/SelectedUserContext";
 import { usePostMutations } from "../../utils/customHooks/mutations/usePostMutations";
 import { useCommentsByPostId } from "../../utils/customHooks/queries/useCommentsByPostId";
+import { useAuth } from "../AuthContext";
+import { useSelectedUserId } from "../SelectedUserContext/SelectedUserContext";
 
 interface PostProps extends PostEntity {
   setEditedPostId: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -29,25 +30,28 @@ const Post: React.FC<PostProps> = ({
   const { deletePostMutation, likePostMutation, unlikePostMutation } =
     usePostMutations();
   const { data: comments } = useCommentsByPostId(_id);
+  const { user } = useAuth();
 
   // todo user id
-  const isPostLiked = !!likes.find((like) => like === "67cff1fdf4f58e5abaa0578b"
-);
+  const isPostLiked = !!likes.find((like) => like === user?._id);
 
   return (
     <div className={Style.post}>
       <div className={Style.iconsHeader}>
-        {/* TODO: WHEN AUTH CONTEXT RETURN USER ID CONDITIONAL RENDER THIS */}
-        <img
-          src={trashIcon}
-          className={Style.icon}
-          onClick={() => deletePostMutation.mutate(_id)}
-        />
-        <img
-          src={pencilIcon}
-          className={Style.icon}
-          onClick={() => setEditedPostId(_id)}
-        />
+        {user?._id === user_id && (
+          <>
+            <img
+              src={trashIcon}
+              className={Style.icon}
+              onClick={() => deletePostMutation.mutate(_id)}
+            />
+            <img
+              src={pencilIcon}
+              className={Style.icon}
+              onClick={() => setEditedPostId(_id)}
+            />
+          </>
+        )}
         <div className={Style.iconTextContainer}>
           <img
             src={commentsIcon}

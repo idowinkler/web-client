@@ -15,6 +15,7 @@ const SideBar: React.FC<SideBarProps> = ({}) => {
   const { setSelectedUserId } = useSelectedUserId();
   const { data: selectedUser } = useSelectedUser();
   const { logout } = useAuth();
+  const { user } = useAuth()
 
   const isUserProfileOpen = !!selectedUser;
 
@@ -24,7 +25,7 @@ const SideBar: React.FC<SideBarProps> = ({}) => {
         <SideBarButton name="פוסטים" iconSrc={postsIcon} onClick={() => setSelectedUserId(undefined)}/>
         <SideBarButton
           iconSrc={userIcon}
-          onClick={() => setSelectedUserId(selectedUser?._id)}
+          onClick={() => setSelectedUserId(user?._id)}
         />
         <SideBarButton iconSrc={logoutIcon} onClick={logout} />
       </div>
