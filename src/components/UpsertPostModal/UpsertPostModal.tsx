@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Style from "./UpsertPostModal.module.css";
 import Modal from "../Modal/Modal";
 import { z } from "zod";
