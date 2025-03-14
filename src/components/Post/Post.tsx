@@ -32,8 +32,7 @@ const Post: React.FC<PostProps> = ({
   const { data: comments } = useCommentsByPostId(_id);
   const { user } = useAuth();
 
-  // todo user id
-  const isPostLiked = !!likes.find((like) => like === user?._id);
+  const isPostLiked = !!likes?.find((like) => like === user?._id);
 
   return (
     <div className={Style.post}>

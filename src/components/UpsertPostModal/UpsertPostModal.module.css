@@ -73,3 +73,8 @@ textarea::-webkit-scrollbar-thumb {
   display: flex;
   justify-content: flex-end;
 }
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+}

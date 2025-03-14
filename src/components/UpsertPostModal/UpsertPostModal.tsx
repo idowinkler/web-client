@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePostMutations } from "../../utils/customHooks/mutations/usePostMutations";
 import { PostEntity } from "../../types/entities/post";
+import { getPostSuggestion } from "../../utils/api/post";
 
 interface UpsertPostModalProps {
   post?: PostEntity;
@@ -54,10 +55,25 @@ const UpsertPostModal: React.FC<UpsertPostModalProps> = ({
     reset();
   };
 
+  const insertPostSuggestion = async () => {
+    const suggestion = await getPostSuggestion();
+
+    setValue("title", suggestion.title)
+    setValue("content", suggestion.content)
+  };
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={() => closeModal()}>
-        {`${post ? "עריכת" : "יצירת"} פוסט`}
+        {
+          <div className={Style.modalHeader}>
+            {`${post ? "עריכת" : "יצירת"} פוסט`}
+            <button className={Style.button} onClick={() => insertPostSuggestion()}>
+              תן לי רעיון
+            </button>
+          </div>
+        }
+
         <form onSubmit={handleSubmit(onSubmit)} className={Style.form}>
           <div className={Style.inputGroup}>
             <label htmlFor="title">כותרת</label>
