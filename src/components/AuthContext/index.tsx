@@ -28,9 +28,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<UserData | null>(null);
   const [token, setToken] = useState(localStorage.getItem("accessToken") || "");
   const navigate = useNavigate();
-  const { mutate: registerMutation /*, isLoading, error*/ } = useRegister();
-  const { mutate: loginMutation /*, isLoading, error*/ } = useLogin();
-  const { mutate: logoutMutation /*, isLoading, error*/ } = useLogout();
+  const { mutate: registerMutation } = useRegister();
+  const { mutate: loginMutation } = useLogin();
+  const { mutate: logoutMutation } = useLogout();
 
   const register = (user: UserData) => {
     registerMutation(user, {
