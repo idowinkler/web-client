@@ -10,6 +10,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.1);
   color: #fff;
   transition: transform 0.2s ease, background-color 0.2s ease;
+  position: relative;
 }
 
 .post:hover {
@@ -22,23 +23,42 @@
   font-weight: bold;
   color: #32a852;
   margin-bottom: 0.5rem;
+  max-width: 50rem;
+  white-space: wrap;
+  word-wrap: break-word;
 }
 
-.userIcon {
+.icon {
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 50%;
-  margin-bottom: 1rem;
   border: 2px solid #32a852;
   transition: transform 0.2s ease;
+  margin-left: 0.5rem;
+  padding: 0.15rem;
 }
 
-.userIcon:hover {
+.icon:hover {
   transform: scale(1.1);
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.iconsHeader {
+  position: absolute;
+  left: 5px;
+  margin-top: 0.15rem;
+  display: flex;
+}
+
 .content {
-  font-size: 1.2rem;
+  white-space: pre-wrap;
+  word-wrap: break-word; 
+  font-size: 1rem;
   line-height: 1.6;
   color: #d3d3d3;
 }
