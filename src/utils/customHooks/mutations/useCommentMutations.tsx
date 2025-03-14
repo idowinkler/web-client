@@ -12,17 +12,5 @@ export const useCommentMutations = () => {
     },
   });
 
-  //   const updatePostMutation = useMutation(updatePost, {
-  //     onSuccess: () => {
-  //       refetchPosts();D
-  //     },
-  //   });
-
-  //   const deletePostMutation = useMutation(deletePost, {
-  //     onSuccess: () => {
-  //       refetchPosts();
-  //     },
-  //   });
-
   return { addCommentMutation };
 };
