@@ -1,6 +1,5 @@
-
 .input {
-  width: 70%;
+  width: 85%;
   padding: 0.75rem;
   border: 1px solid #444;
   border-radius: 0.25rem;
@@ -24,7 +23,8 @@ p {
   font-size: 1rem;
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem
+  margin-top: 1rem;
+  margin-bottom: 1rem
 }
 
 .button {
@@ -43,8 +43,18 @@ p {
   background-color: #24793b;
 }
 
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10rem;
+  background-color: #1f1f1f;
+  width: 70%;
+  border-radius: 8px;
+  padding: 20px;
+
+}
 .commentsContainer {
-  max-height: 25rem;
+  max-height: 30rem;
   overflow-y: scroll;
 }
 
@@ -65,4 +75,34 @@ p {
 
 .commentsContainer::-webkit-scrollbar-thumb:hover {
   background: #534b4b;
+}
+
+.comments {
+  background-color: #b8b2a7;
+  width: 100%;
+}
+
+.icon {
+  @apply transition-all;
+  height: 2rem;
+  width: 2rem;
+  margin-right: 0.5rem;
+}
+
+.icon:hover {
+  filter: brightness(0.7);
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.header {
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.error {
+  margin-bottom: 1rem;
 }

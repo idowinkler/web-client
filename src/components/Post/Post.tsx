@@ -11,10 +11,10 @@ import { usePostMutations } from "../../utils/customHooks/mutations/usePostMutat
 import { useCommentsByPostId } from "../../utils/customHooks/queries/useCommentsByPostId";
 import { useAuth } from "../AuthContext";
 import { useSelectedUserId } from "../SelectedUserContext/SelectedUserContext";
+import { useNavigate } from "react-router-dom";
 
 interface PostProps extends PostEntity {
   setEditedPostId: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setCommentsPostId: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const Post: React.FC<PostProps> = ({
@@ -23,7 +23,6 @@ const Post: React.FC<PostProps> = ({
   content,
   user_id,
   setEditedPostId,
-  setCommentsPostId,
   likes,
 }) => {
   const { setSelectedUserId } = useSelectedUserId();
@@ -31,8 +30,9 @@ const Post: React.FC<PostProps> = ({
     usePostMutations();
   const { data: comments } = useCommentsByPostId(_id);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  // todo user id
+
   const isPostLiked = !!likes.find((like) => like === user?._id);
 
   return (
@@ -56,7 +56,7 @@ const Post: React.FC<PostProps> = ({
           <img
             src={commentsIcon}
             className={Style.icon}
-            onClick={() => setCommentsPostId(_id)}
+            onClick={() => navigate(`/comments/${_id}`)}
           />
           {comments?.length}
         </div>
