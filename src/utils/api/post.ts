@@ -47,3 +47,19 @@ export const deletePost = async (postId: PostEntity["_id"]) => {
 
   return deletedPost;
 };
+
+export const likePost = async ( id: PostEntity["_id"] ) => {
+  const updatedPost = await fetchRequest(`/post/${id}/like`, {
+    method: "PUT",
+  });
+
+  return updatedPost;
+};
+
+export const unlikePost = async (id: PostEntity["_id"] ) => {
+  const updatedPost = await fetchRequest(`/post/${id}/unlike`, {
+    method: "PUT",
+  });
+
+  return updatedPost;
+};
