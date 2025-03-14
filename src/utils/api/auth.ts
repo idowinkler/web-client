@@ -1,7 +1,7 @@
-import { UserData } from "../../types/entities/user";
+import { UserRegisterData } from "../../types/entities/user";
 import { fetchRequest } from "../fetch";
 
-export const register = async (user: UserData) => {
+export const register = async (user: UserRegisterData) => {
   const response = await fetchRequest(`/auth/register`, {
     method: "POST",
     body: JSON.stringify(user),
@@ -11,8 +11,8 @@ export const register = async (user: UserData) => {
 };
 
 export const login = async (
-  email: UserData["email"],
-  password: UserData["password"]
+  email: UserRegisterData["email"],
+  password: UserRegisterData["password"]
 ) => {
   const response = await fetchRequest(`/auth/login`, {
     method: "POST",

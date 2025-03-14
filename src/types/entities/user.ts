@@ -5,7 +5,12 @@ export interface UserEntity {
   userName: string;
 }
 
-export interface UserData extends Omit<UserEntity, "_id"> {
+export interface UserData extends UserEntity {
+  email: string;
+  password: string;
+}
+
+export interface UserRegisterData extends Omit<UserEntity, "_id"> {
   email: string;
   password: string;
 }
