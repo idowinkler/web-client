@@ -29,11 +29,12 @@ const Content: React.FC<ContentProps> = ({}) => {
           posts.map((post) => (
             <Post
               _id={post._id}
+              key={post._id}
               user_id={post.user_id}
               content={post.content}
               title={post.title}
               setEditedPostId={setEditedPostId}
-              key={post._id}
+              likes={post.likes}
             />
           ))}
       </div>
