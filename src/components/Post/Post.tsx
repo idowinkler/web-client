@@ -31,7 +31,7 @@ const Post: React.FC<PostProps> = ({
   const { data: comments } = useCommentsByPostId(_id);
   const { user } = useAuth();
   const navigate = useNavigate();
-
+  
   const isPostLiked = !!likes?.find((like) => like === user?._id);
 
   return (
