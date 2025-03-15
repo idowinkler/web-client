@@ -1,6 +1,7 @@
 import { QueryKey, useQueryClient } from "@tanstack/react-query";
 import { UserEntity } from "../../../types/entities/user";
 import { QUERY_KEYS } from "../../../constants/QueryKeys";
+import { PostEntity } from "../../../types/entities/post";
 
 export const useRefetchQueries = () => {
   const queryClient = useQueryClient();
@@ -11,6 +12,8 @@ export const useRefetchQueries = () => {
   const refetchUserById = (userId: UserEntity["_id"]) =>
     refetchQuery([QUERY_KEYS.USER_BY_ID(userId)]);
   const refetchPosts = () => refetchQuery([QUERY_KEYS.POSTS]);
+  const refetchCommentsByPostId = (postId: PostEntity["_id"]) =>
+    refetchQuery([QUERY_KEYS.COMMENTS_BY_POST(postId)]);
 
-  return { refetchUserById, refetchPosts };
+  return { refetchUserById, refetchPosts, refetchCommentsByPostId };
 };

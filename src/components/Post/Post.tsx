@@ -3,10 +3,15 @@ import Style from "./Post.module.css";
 import userIcon from "../../assets/user.svg";
 import trashIcon from "../../assets/trash.svg";
 import pencilIcon from "../../assets/pencil.svg";
+import commentsIcon from "../../assets/comments.svg";
+import heartIcon from "../../assets/heart.svg";
+import fullHeartIcon from "../../assets/fullHeart.svg";
 import { PostEntity } from "../../types/entities/post";
-import { useSelectedUserId } from "../SelectedUserContext/SelectedUserContext";
 import { usePostMutations } from "../../utils/customHooks/mutations/usePostMutations";
+import { useCommentsByPostId } from "../../utils/customHooks/queries/useCommentsByPostId";
 import { useAuth } from "../AuthContext";
+import { useSelectedUserId } from "../SelectedUserContext/SelectedUserContext";
+import { useNavigate } from "react-router-dom";
 
 interface PostProps extends PostEntity {
   setEditedPostId: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -18,11 +23,16 @@ const Post: React.FC<PostProps> = ({
   content,
   user_id,
   setEditedPostId,
+  likes,
 }) => {
   const { setSelectedUserId } = useSelectedUserId();
-  const { deletePostMutation } = usePostMutations();
+  const { deletePostMutation, likePostMutation, unlikePostMutation } =
+    usePostMutations();
+  const { data: comments } = useCommentsByPostId(_id);
   const { user } = useAuth();
-  console.log(user);
+  const navigate = useNavigate();
+  
+  const isPostLiked = !!likes?.find((like) => like === user?._id);
 
   return (
     <div className={Style.post}>
@@ -41,7 +51,26 @@ const Post: React.FC<PostProps> = ({
             />
           </>
         )}
-        {/* TODO: WHEN AUTH CONTEXT RETURN USER ID CONDITIONAL RENDER THIS */}
+        <div className={Style.iconTextContainer}>
+          <img
+            src={commentsIcon}
+            className={Style.icon}
+            onClick={() => navigate(`/comments/${_id}`)}
+          />
+          {comments?.length}
+        </div>
+        <div className={Style.iconTextContainer}>
+          <img
+            src={isPostLiked ? fullHeartIcon : heartIcon}
+            className={Style.icon}
+            onClick={() =>
+              isPostLiked
+                ? unlikePostMutation.mutate(_id)
+                : likePostMutation.mutate(_id)
+            }
+          />
+          {likes?.length}
+        </div>
       </div>
       <div className={Style.header}>
         <img
@@ -51,7 +80,6 @@ const Post: React.FC<PostProps> = ({
         />
         <div className={Style.title}>{title}</div>
       </div>
-
       <div className={Style.content}>{content}</div>
     </div>
   );

@@ -1,0 +1,15 @@
+.container {
+  width: 100%;
+  font-size: 1rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+.user {
+  font-weight: bold;
+  color: #32a852;
+  display: inline-block;
+  margin-left: 0.15rem;
+}
