@@ -5,6 +5,7 @@ import styles from "./Register.module.css";
 import { useAuth } from "../../components/AuthContext";
 import { Link } from "react-router-dom";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
+import toast from "react-hot-toast";
 
 const schema = z.object({
   email: z.string().email("כתובת אימייל לא תקינה"),
@@ -36,8 +37,7 @@ const Register = () => {
   };
 
   const handleGoogleFailure = () => {
-    // TODO: show error toast
-    console.log("Error logging in with google");
+    toast.error("שגיאה בהתחברות עם גוגל");
   };
 
   return (
