@@ -16,6 +16,14 @@ export const getPostsByUserId = async (userId: UserEntity["_id"]) => {
   return posts;
 };
 
+export const getPostSuggestion = async () => {
+  const suggestion = await fetchRequest(`/post/suggestion`, {
+    method: "GET",
+  });
+
+  return suggestion;
+};
+
 export const addPost = async (post: Omit<PostEntity, "_id" | "user_id">) => {
   const newPost = await fetchRequest(`/post`, {
     method: "POST",
@@ -48,7 +56,7 @@ export const deletePost = async (postId: PostEntity["_id"]) => {
   return deletedPost;
 };
 
-export const likePost = async ( id: PostEntity["_id"] ) => {
+export const likePost = async (id: PostEntity["_id"]) => {
   const updatedPost = await fetchRequest(`/post/${id}/like`, {
     method: "PUT",
   });
@@ -56,7 +64,7 @@ export const likePost = async ( id: PostEntity["_id"] ) => {
   return updatedPost;
 };
 
-export const unlikePost = async (id: PostEntity["_id"] ) => {
+export const unlikePost = async (id: PostEntity["_id"]) => {
   const updatedPost = await fetchRequest(`/post/${id}/unlike`, {
     method: "PUT",
   });

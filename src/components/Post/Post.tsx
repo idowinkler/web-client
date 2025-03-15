@@ -32,8 +32,7 @@ const Post: React.FC<PostProps> = ({
   const { user } = useAuth();
   const navigate = useNavigate();
 
-
-  const isPostLiked = !!likes.find((like) => like === user?._id);
+  const isPostLiked = !!likes?.find((like) => like === user?._id);
 
   return (
     <div className={Style.post}>
