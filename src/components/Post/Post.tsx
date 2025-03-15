@@ -22,7 +22,6 @@ const Post: React.FC<PostProps> = ({
   const { setSelectedUserId } = useSelectedUserId();
   const { deletePostMutation } = usePostMutations();
   const { user } = useAuth();
-  console.log(user);
 
   return (
     <div className={Style.post}>
