@@ -39,3 +39,19 @@ export const logout = async (refreshToken: string) => {
 
   return response;
 };
+
+export const uploadImage = async (file: File) => {
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+  const response = await fetchRequest(`/file?file=${file.name}`, {
+    method: "POST",
+    body: formData,
+    headers: {
+      "Content-Type": "image/*",
+    },
+  });
+
+  return response.url;
+};

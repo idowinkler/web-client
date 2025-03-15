@@ -13,4 +13,5 @@ export interface UserData extends UserEntity {
 export interface UserRegisterData extends Omit<UserEntity, "_id"> {
   email: string;
   password: string;
+  image: string;
 }

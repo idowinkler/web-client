@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: center;
   background-color: #b8b2a7;
+  gap: 3rem;
 }
 
 .form {
@@ -76,4 +77,20 @@
 .link {
   color: #32a852;
   text-decoration: underline;
+}
+
+.imageContainer {
+  display: flex;
+  align-items: flex-end;
+}
+
+.image {
+  width: 200px;
+  height: 200px;
+}
+
+.upload {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
 }
