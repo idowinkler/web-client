@@ -4,6 +4,7 @@ import {
   useState,
   useLayoutEffect,
   useCallback,
+  useEffect,
 } from "react";
 import { UserData, UserRegisterData } from "../../types/entities/user";
 import { useNavigate } from "react-router-dom";
@@ -34,8 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const register = (user: UserRegisterData) => {
     registerMutation(user, {
-      onSuccess: ({ refreshTokens, ...userData }) => {
-        setUser(userData);
+      onSuccess: () => {
         navigate("/login");
       },
       onError: (err) => {
@@ -51,6 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setUser(userData);
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("user", JSON.stringify(userData));
         navigate("/");
       },
       onError: (err) => {
@@ -68,6 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setToken("");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
         navigate("/login");
       },
       onError: (err) => {
@@ -93,6 +95,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       api.interceptors.request.eject(requestInterceptor);
     };
   }, [token]);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+  }, []);
 
   useLayoutEffect(() => {
     const responseInterceptor = api.interceptors.response.use(
