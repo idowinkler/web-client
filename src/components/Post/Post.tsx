@@ -38,7 +38,7 @@ const Post: React.FC<PostProps> = ({
   return (
     <div className={Style.post}>
       <div className={Style.iconsHeader}>
-        {user?._id === user_id && (
+        {user?._id === user_id._id && (
           <>
             <img
               src={trashIcon}
@@ -75,9 +75,9 @@ const Post: React.FC<PostProps> = ({
       </div>
       <div className={Style.header}>
         <img
-          src={userIcon}
+          src={user_id.image || userIcon}
           className={Style.icon}
-          onClick={() => setSelectedUserId(user_id)}
+          onClick={() => setSelectedUserId(user_id._id)}
         />
         <div className={Style.title}>{title}</div>
       </div>

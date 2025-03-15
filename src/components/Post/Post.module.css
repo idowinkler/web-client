@@ -27,6 +27,7 @@
   max-width: 50rem;
   white-space: wrap;
   word-wrap: break-word;
+  margin-right: 0.5rem;
 }
 
 .icon {
