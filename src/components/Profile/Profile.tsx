@@ -78,7 +78,7 @@ const Profile: React.FC<ProfileProps> = ({ isOpen }) => {
           <div className={Style.profileContent}>
             {selectedUser && (
               <>
-                <img src={userIcon} className={Style.profilePicture} />
+                <img src={selectedUser.image || userIcon} className={Style.profilePicture} />
                 <div className={Style.username}>
                   {isInEditMode ? (
                     <input
