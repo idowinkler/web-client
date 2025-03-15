@@ -12,6 +12,7 @@ import { useRegister } from "../../utils/customHooks/mutations/useRegister";
 import { useLogin } from "../../utils/customHooks/mutations/useLogin";
 import { useLogout } from "../../utils/customHooks/mutations/useLogout";
 import { api } from "../../utils/fetch";
+import toast from "react-hot-toast";
 
 interface AuthContextType {
   user: UserData | null;
@@ -55,7 +56,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         navigate("/");
       },
       onError: (err) => {
-        // TODO: add toast message
+        toast.error("פרטי ההתחברות שגויים");
+
         console.error(err);
       },
     });

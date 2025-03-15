@@ -7,12 +7,22 @@ import Register from "../../pages/Register";
 import { AuthProvider } from "../AuthContext";
 import Login from "../../pages/Login";
 import ProtectedRoute from "../ProtectedRoute";
+import { Toaster } from "react-hot-toast";
 
 export const App: React.FC = ({}) => {
   return (
     <AuthProvider>
       <SelectedUserContextProvider>
         <div className={Style.app}>
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                backgroundColor: "#1f1f1f",
+                color: 'white'
+              },
+            }}
+          />
           <Routes>
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Content />} />

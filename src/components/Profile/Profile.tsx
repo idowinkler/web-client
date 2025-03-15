@@ -54,7 +54,6 @@ const Profile: React.FC<ProfileProps> = ({ isOpen }) => {
                     className={Style.icon}
                     onClick={() => {
                       handleSubmit(onSubmit)();
-
                       setIsInEditMode(false);
                     }}
                   />
@@ -64,7 +63,6 @@ const Profile: React.FC<ProfileProps> = ({ isOpen }) => {
                     className={Style.icon}
                     onClick={() => {
                       setValue("userName", selectedUser?.userName);
-
                       setIsInEditMode(true);
                     }}
                   />
@@ -94,9 +92,10 @@ const Profile: React.FC<ProfileProps> = ({ isOpen }) => {
                   )}
                 </div>
 
-                {
-                  <div>{`${selectedUser.firstName} ${selectedUser.lastName}`}</div>
-                }
+                <p className={Style.nameContainer}>
+                  <div className={Style.name}>שם:</div>
+                  {`${selectedUser.firstName} ${selectedUser.lastName}`}
+                </p>
               </>
             )}
           </div>
