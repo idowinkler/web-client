@@ -131,6 +131,13 @@ const Register = () => {
               </span>
             </span>
           </div>
+          <hr className={styles.divider} />
+          <div className={styles.googleSignup}>הרשמה באמצעות גוגל:</div>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleFailure}
+            auto_select
+          />
         </>
       </form>
       <div className={styles.imageContainer}>
@@ -157,11 +164,6 @@ const Register = () => {
           style={{ display: "none" }}
         />
       </div>
-      <GoogleLogin
-        onSuccess={handleGoogleSuccess}
-        onError={handleGoogleFailure}
-        auto_select
-      />
     </div>
   );
 };
