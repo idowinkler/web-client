@@ -10,6 +10,15 @@ export const register = async (user: UserRegisterData) => {
   return response;
 };
 
+export const registerGoogle = async (credential: string) => {
+  const response = await fetchRequest(`/auth/google`, {
+    method: "POST",
+    body: JSON.stringify({ credential }),
+  });
+
+  return response;
+};
+
 export const login = async (
   email: UserRegisterData["email"],
   password: UserRegisterData["password"]

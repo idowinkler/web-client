@@ -12,12 +12,14 @@ import { useRegister } from "../../utils/customHooks/mutations/useRegister";
 import { useLogin } from "../../utils/customHooks/mutations/useLogin";
 import { useLogout } from "../../utils/customHooks/mutations/useLogout";
 import { api } from "../../utils/fetch";
+import { useRegisterGoogle } from "../../utils/customHooks/mutations/useRegisterGoogle";
 import toast from "react-hot-toast";
 
 interface AuthContextType {
   user: UserData | null;
   token: string;
   register: (user: UserRegisterData) => void;
+  registerGoogle: (credential: string) => void;
   login: (user: UserData) => void;
   logout: () => void;
 }
@@ -31,6 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState(localStorage.getItem("accessToken") || "");
   const navigate = useNavigate();
   const { mutate: registerMutation } = useRegister();
+  const { mutate: registerGoogleMutation } = useRegisterGoogle();
   const { mutate: loginMutation } = useLogin();
   const { mutate: logoutMutation } = useLogout();
 
@@ -38,6 +41,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     registerMutation(user, {
       onSuccess: () => {
         navigate("/login");
+      },
+      onError: (err) => {
+        console.error(err);
+      },
+    });
+  };
+
+  const registerGoogle = (credential: string) => {
+    registerGoogleMutation(credential, {
+      onSuccess: ({
+        refreshTokens,
+        accessToken,
+        refreshToken,
+        ...userData
+      }) => {
+        setUser(userData);
+        setToken(accessToken);
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        navigate("/");
       },
       onError: (err) => {
         console.error(err);
@@ -112,7 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       },
       async (error) => {
         const originalRequest = error.config;
-        if (error.response.status === 403 && !originalRequest._retry) {
+        if (error?.response?.status === 403 && !originalRequest?._retry) {
           originalRequest._retry = true;
           try {
             const refreshToken = localStorage.getItem("refreshToken");
@@ -142,7 +165,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [logout]);
 
   return (
-    <AuthContext.Provider value={{ user, token, register, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, register, registerGoogle, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
