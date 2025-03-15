@@ -7,6 +7,7 @@ import Register from "../../pages/Register";
 import { AuthProvider } from "../AuthContext";
 import Login from "../../pages/Login";
 import ProtectedRoute from "../ProtectedRoute";
+import Comments from "../Commnets/Comments";
 
 export const App: React.FC = ({}) => {
   return (
@@ -15,6 +16,7 @@ export const App: React.FC = ({}) => {
         <div className={Style.app}>
           <Routes>
             <Route element={<ProtectedRoute />}>
+            <Route path="/comments/:postId" element={<Comments />} />
               <Route path="/" element={<Content />} />
               <Route path="*" element={<Content />} />
             </Route>

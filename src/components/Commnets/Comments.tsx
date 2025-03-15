@@ -1,57 +1,47 @@
 import React from "react";
-import Style from "./CommentsModal.module.css";
-import Modal from "../Modal/Modal";
+import Style from "./Comments.module.css";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PostEntity } from "../../types/entities/post";
 import { useCommentsByPostId } from "../../utils/customHooks/queries/useCommentsByPostId";
 import { useCommentMutations } from "../../utils/customHooks/mutations/useCommentMutations";
 import Comment from "../Comment/Comment";
+import { useNavigate, useParams } from "react-router-dom";
+import closeIcon from "../../assets/circleClose.svg";
 
-interface CommentsModalProps {
-  postId?: PostEntity["_id"];
-  isOpen: boolean;
-  closeModal: () => void;
-}
+interface CommentsProps {}
 
 const schema = z.object({
   message: z.string().min(1, "הודעה היא שדה חובה"),
 });
 
-const CommentsModal: React.FC<CommentsModalProps> = ({
-  postId,
-  isOpen,
-  closeModal,
-}) => {
+const Comments: React.FC<CommentsProps> = ({}) => {
+  const { postId } = useParams();
   const { data: comments } = useCommentsByPostId(postId);
   const { addCommentMutation } = useCommentMutations();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     resolver: zodResolver(schema),
   });
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     if (postId) {
-      console.log("mutating");
       addCommentMutation.mutate({ message: data.message, post_id: postId });
     }
     reset();
   };
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={() => closeModal()}>
+    <div className={Style.comments}>
+      <div className={Style.header}>
         תגובות
-        <div className={Style.commentsContainer}>
-          {comments?.map((comment) => (
-            <Comment comment={comment} />
-          ))}
-        </div>
+        <img
+          src={closeIcon}
+          className={Style.icon}
+          onClick={() => navigate("/")}
+        />
+      </div>
+      <div className={Style.container}>
         <form onSubmit={handleSubmit(onSubmit)} className={Style.form}>
           <input
             type="text"
@@ -59,15 +49,19 @@ const CommentsModal: React.FC<CommentsModalProps> = ({
             {...register("message")}
             className={Style.input}
           />
-          {errors.message && <p>{errors.message.message as string}</p>}
 
           <button type="submit" className={Style.button}>
             פרסום תגובה
           </button>
         </form>
-      </Modal>
-    </>
+        <div className={Style.commentsContainer}>
+          {comments?.map((comment) => (
+            <Comment comment={comment} />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default CommentsModal;
+export default Comments;

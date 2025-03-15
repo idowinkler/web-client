@@ -7,7 +7,6 @@ import { useSelectedUser } from "../../utils/customHooks/queries/useSelectedUser
 import AddPostButton from "../AddPostButton/AddPostButton";
 import { PostEntity } from "../../types/entities/post";
 import UpsertPostModal from "../UpsertPostModal/UpsertPostModal";
-import CommentsModal from "../CommnetsModal/CommentsModal";
 
 interface ContentProps {}
 
@@ -15,14 +14,9 @@ const Content: React.FC<ContentProps> = ({}) => {
   const [editedPostId, setEditedPostId] = useState<
     PostEntity["_id"] | undefined
   >(undefined);
-  const [commentsPostId, setCommentsPostId] = useState<
-    PostEntity["_id"] | undefined
-  >(undefined);
   const { selectedUserId } = useSelectedUserId();
   const { data: posts } = usePosts(selectedUserId);
   const { data: selectedUser } = useSelectedUser();
-
-  console.log(posts)
 
   return (
     <div className={Style.content}>
@@ -40,7 +34,6 @@ const Content: React.FC<ContentProps> = ({}) => {
               content={post.content}
               title={post.title}
               setEditedPostId={setEditedPostId}
-              setCommentsPostId={setCommentsPostId}
               likes={post.likes}
             />
           ))}
@@ -49,11 +42,6 @@ const Content: React.FC<ContentProps> = ({}) => {
         post={posts?.find((post) => post._id === editedPostId)}
         isOpen={!!editedPostId}
         closeModal={() => setEditedPostId(undefined)}
-      />
-      <CommentsModal
-        postId={commentsPostId}
-        isOpen={!!commentsPostId}
-        closeModal={() => setCommentsPostId(undefined)}
       />
     </div>
   );
