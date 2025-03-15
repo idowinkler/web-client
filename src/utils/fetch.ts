@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 export const api = axios.create({
   baseURL: "http://localhost:3000",
@@ -9,13 +9,14 @@ export const api = axios.create({
 
 export const fetchRequest = async (
   url: string,
-  { method, body }: RequestInit
+  { method, body, headers }: RequestInit
 ) => {
   try {
     const response = await api.request({
       url,
       method,
       data: body,
+      headers: headers as AxiosRequestConfig["headers"],
     });
 
     return response.data;

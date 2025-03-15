@@ -4,6 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import styles from "./Register.module.css";
 import { useAuth } from "../../components/AuthContext";
 import { Link } from "react-router-dom";
+import avatarImg from "../../assets/user-circle.svg";
+import uploadImg from "../../assets/image-upload.svg";
+import { useEffect, useState } from "react";
+import { useUploadImage } from "../../utils/customHooks/mutations/useUploadImage";
 
 const schema = z.object({
   email: z.string().email("כתובת אימייל לא תקינה"),
@@ -11,22 +15,41 @@ const schema = z.object({
   firstName: z.string().min(1, "שם פרטי הוא שדה חובה"),
   lastName: z.string().min(1, "שם משפחה הוא שדה חובה"),
   userName: z.string().min(1, "שם משתמש הוא שדה חובה"),
+  image: z.instanceof(FileList).refine((obj) => obj.length === 1, {
+    message: "תמונה היא שדה חובה",
+  }),
 });
 
 const Register = () => {
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm({
     resolver: zodResolver(schema),
   });
+  const [image] = watch(["image"]);
+  const imageRef: { current: HTMLInputElement | null } = { current: null };
+  const { ref, ...rest } = register("image", { required: true });
 
   const { register: registerUser } = useAuth();
+  const { mutateAsync: uploadImageMutation } = useUploadImage();
 
-  const onSubmit = (data) => {
-    registerUser(data);
+  const onSubmit = async (data) => {
+    const image = await uploadImageMutation(data.image[0]);
+    await registerUser({ ...data, image });
   };
+
+  useEffect(() => {
+    if (image && image[0]) {
+      const newUrl = URL.createObjectURL(image[0]);
+      if (newUrl !== avatarImg) {
+        setPreviewImage(newUrl);
+      }
+    }
+  }, [image]);
 
   return (
     <div className={styles.container}>
@@ -96,6 +119,30 @@ const Register = () => {
           </span>
         </div>
       </form>
+      <div className={styles.imageContainer}>
+        <img
+          src={uploadImg}
+          alt="upload"
+          className={styles.upload}
+          onClick={() => imageRef.current?.click()}
+        />
+        <img
+          src={previewImage || avatarImg}
+          alt="preview"
+          className={styles.image}
+        />
+        <input
+          {...rest}
+          ref={(e) => {
+            ref(e);
+            imageRef.current = e;
+          }}
+          type="file"
+          name="image"
+          id="image"
+          style={{ display: "none" }}
+        />
+      </div>
     </div>
   );
 };

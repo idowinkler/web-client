@@ -15,7 +15,7 @@ import { api } from "../../utils/fetch";
 interface AuthContextType {
   user: UserData | null;
   token: string;
-  register: (user: UserRegisterData) => void;
+  register: (user: UserRegisterData) => Promise<void>;
   login: (user: UserData) => void;
   logout: () => void;
 }
@@ -28,12 +28,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<UserData | null>(null);
   const [token, setToken] = useState(localStorage.getItem("accessToken") || "");
   const navigate = useNavigate();
-  const { mutate: registerMutation } = useRegister();
+  const { mutateAsync: registerMutation } = useRegister();
   const { mutate: loginMutation } = useLogin();
   const { mutate: logoutMutation } = useLogout();
 
-  const register = (user: UserRegisterData) => {
-    registerMutation(user, {
+  const register = async (user: UserRegisterData) => {
+    await registerMutation(user, {
       onSuccess: ({ refreshTokens, ...userData }) => {
         setUser(userData);
         navigate("/login");
