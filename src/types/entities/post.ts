@@ -3,5 +3,6 @@ export interface PostEntity {
   title: string;
   content: string;
   user_id: string;
-  likes: string[]
+  likes: string[];
+  image?: string;
 }

@@ -35,6 +35,7 @@ const Content: React.FC<ContentProps> = ({}) => {
               title={post.title}
               setEditedPostId={setEditedPostId}
               likes={post.likes}
+              image={post.image}
             />
           ))}
       </div>

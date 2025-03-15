@@ -78,3 +78,17 @@ textarea::-webkit-scrollbar-thumb {
   display: flex;
   justify-content: space-between;
 }
+
+.image {
+  max-width: 100%;
+  max-height: 200px;
+}
+
+.upload {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  background: white;
+  border-radius: 10px;
+  margin-top: 1rem;
+}

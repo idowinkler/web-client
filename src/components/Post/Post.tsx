@@ -24,6 +24,7 @@ const Post: React.FC<PostProps> = ({
   user_id,
   setEditedPostId,
   likes,
+  image,
 }) => {
   const { setSelectedUserId } = useSelectedUserId();
   const { deletePostMutation, likePostMutation, unlikePostMutation } =
@@ -31,7 +32,7 @@ const Post: React.FC<PostProps> = ({
   const { data: comments } = useCommentsByPostId(_id);
   const { user } = useAuth();
   const navigate = useNavigate();
-  
+
   const isPostLiked = !!likes?.find((like) => like === user?._id);
 
   return (
@@ -81,6 +82,7 @@ const Post: React.FC<PostProps> = ({
         <div className={Style.title}>{title}</div>
       </div>
       <div className={Style.content}>{content}</div>
+      {image && <img src={image} alt="post" className={Style.image} />}
     </div>
   );
 };
