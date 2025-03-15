@@ -5,99 +5,102 @@ import pencilIcon from "../../assets/pencil.svg";
 import checkIcon from "../../assets/check.svg";
 import closeIcon from "../../assets/close.svg";
 import { useSelectedUser } from "../../utils/customHooks/queries/useSelectedUser";
-import { UserEntity } from "../../types/entities/user";
 import { useUserMutations } from "../../utils/customHooks/mutations/useUserMutations";
 import { useSelectedUserId } from "../SelectedUserContext/SelectedUserContext";
+import { useAuth } from "../AuthContext";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ProfileProps {
   isOpen: boolean;
 }
 
+const schema = z.object({
+  userName: z.string().min(1, "שם משתמש הוא שדה חובה"),
+});
+
 const Profile: React.FC<ProfileProps> = ({ isOpen }) => {
   const [isInEditMode, setIsInEditMode] = useState<boolean>(false);
-  const [editedUser, setEditedUser] = useState<UserEntity | undefined>(
-    undefined
-  );
-  const { data: user } = useSelectedUser();
-
+  const { data: selectedUser } = useSelectedUser();
   const { selectedUserId, setSelectedUserId } = useSelectedUserId();
   const { updateUserMutation } = useUserMutations();
-  console.log("selected user data", user);
+  const { user } = useAuth();
 
-  const saveUser = () => {
-    if (editedUser) {
-      updateUserMutation.mutate(editedUser);
-    }
-  };
-
-  const onEditButtonClick = () => {
-    if (!isInEditMode && user) {
-      setEditedUser(user);
-    }
-
-    // todo save
-    if (isInEditMode) {
-      saveUser();
-      // setEditedUser(undefined);
-    }
-
-    setIsInEditMode(!isInEditMode);
-  };
-
-  const onUsernameEdit: React.ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    if (editedUser) {
-      setEditedUser({ ...editedUser, userName: event.target.value });
-    }
-  };
+  const { register, handleSubmit, setValue } = useForm({
+    resolver: zodResolver(schema),
+  });
 
   const closeProfile = () => {
-    setSelectedUserId(undefined)
-    setIsInEditMode(false)
-    setEditedUser(undefined)
-  }
+    setSelectedUserId(undefined);
+    setIsInEditMode(false);
+  };
+
+  const onSubmit = (data) => {
+    updateUserMutation.mutate(data);
+  };
 
   return (
     <div className={`${Style.profile} ${isOpen && Style.open}`}>
-      <div className={Style.innerContainer}>
-        <div className={Style.profileTitle}>
-          <div className={Style.flex}>
-            פרופיל
-            {selectedUserId === "6787df26ec329cde4c991995" && (
-              <img
-                src={isInEditMode ? checkIcon : pencilIcon}
-                className={Style.icon}
-                onClick={() => onEditButtonClick()}
-              />
-            )}
-          </div>
-          <img src={closeIcon} className={Style.icon} onClick={closeProfile} />
-        </div>
-
-        <div className={Style.profileContent}>
-          {user && (
-            <>
-              <img src={userIcon} className={Style.profilePicture} />
-              <div className={Style.username}>
-                {isInEditMode ? (
-                  <input
-                    value={editedUser?.userName}
-                    className={Style.input}
-                    onChange={onUsernameEdit}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={Style.innerContainer}>
+          <div className={Style.profileTitle}>
+            <div className={Style.flex}>
+              פרופיל
+              {selectedUserId === user?._id &&
+                (isInEditMode ? (
+                  <img
+                    src={checkIcon}
+                    className={Style.icon}
+                    onClick={() => {
+                      handleSubmit(onSubmit)();
+                      setIsInEditMode(false);
+                    }}
                   />
                 ) : (
-                  editedUser?.userName || user.userName
-                )}
-              </div>
-              {/* <div className={Style.propertiesContainer}>
-                <ProfileField propertyName="שם פרטי" value={user.firstName} />
-                <ProfileField propertyName="שם משפחה" value={user.lastName} />
-              </div> */}
-            </>
-          )}
+                  <img
+                    src={pencilIcon}
+                    className={Style.icon}
+                    onClick={() => {
+                      setValue("userName", selectedUser?.userName);
+                      setIsInEditMode(true);
+                    }}
+                  />
+                ))}
+            </div>
+            <img
+              src={closeIcon}
+              className={Style.icon}
+              onClick={closeProfile}
+            />
+          </div>
+
+          <div className={Style.profileContent}>
+            {selectedUser && (
+              <>
+                <img src={userIcon} className={Style.profilePicture} />
+                <div className={Style.username}>
+                  {isInEditMode ? (
+                    <input
+                      type="text"
+                      id="userName"
+                      {...register("userName")}
+                      className={Style.input}
+                    />
+                  ) : (
+                    selectedUser.userName
+                  )}
+                </div>
+
+                <p className={Style.nameContainer}>
+                  <div className={Style.name}>שם:</div>
+                  {`${selectedUser.firstName} ${selectedUser.lastName}`}
+                </p>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

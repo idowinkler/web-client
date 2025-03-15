@@ -55,6 +55,7 @@
   filter: brightness(0.7);
   cursor: pointer;
 }
+
 .icon:active {
   filter: brightness(0.5);
 }
@@ -65,4 +66,19 @@
 
 .flex {
   display: flex;
+}
+
+.nameContainer {
+  font-size: 1.25rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  margin-top: 1rem;
+}
+
+.name {
+  font-weight: bold;
+  color: #32a852;
+  display: inline-block;
+  margin-left: 0.15rem;
 }

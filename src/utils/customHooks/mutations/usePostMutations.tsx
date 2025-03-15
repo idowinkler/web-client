@@ -1,6 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRefetchQueries } from "../queries/useRefetchQueries";
-import { addPost, deletePost, updatePost } from "../../api/post";
+import {
+  addPost,
+  deletePost,
+  likePost,
+  unlikePost,
+  updatePost,
+} from "../../api/post";
 
 export const usePostMutations = () => {
   const { refetchPosts } = useRefetchQueries();
@@ -22,5 +28,23 @@ export const usePostMutations = () => {
     },
   });
 
-  return { addPostMutation, updatePostMutation, deletePostMutation };
+  const likePostMutation = useMutation(likePost, {
+    onSuccess: () => {
+      refetchPosts();
+    },
+  });
+
+  const unlikePostMutation = useMutation(unlikePost, {
+    onSuccess: () => {
+      refetchPosts();
+    },
+  });
+
+  return {
+    addPostMutation,
+    updatePostMutation,
+    deletePostMutation,
+    likePostMutation,
+    unlikePostMutation,
+  };
 };

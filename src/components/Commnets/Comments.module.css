@@ -1,0 +1,108 @@
+.input {
+  width: 85%;
+  padding: 0.75rem;
+  border: 1px solid #444;
+  border-radius: 0.25rem;
+  background-color: #333;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #32a852;
+  box-shadow: 0 0 0 2px rgba(50, 168, 82, 0.5);
+}
+
+p {
+  font-size: 1rem;
+}
+
+.form {
+  font-weight: 400;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1rem
+}
+
+.button {
+  @apply transition-all;
+  padding: 0.75rem;
+  background-color: #32a852;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #24793b;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10rem;
+  background-color: #1f1f1f;
+  width: 70%;
+  border-radius: 8px;
+  padding: 20px;
+
+}
+.commentsContainer {
+  max-height: 30rem;
+  overflow-y: scroll;
+}
+
+.commentsContainer::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.commentsContainer::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.commentsContainer::-webkit-scrollbar-thumb {
+  background: #645c5c;
+  border-radius: 10px;
+}
+
+.commentsContainer::-webkit-scrollbar-thumb:hover {
+  background: #534b4b;
+}
+
+.comments {
+  background-color: #b8b2a7;
+  width: 100%;
+}
+
+.icon {
+  @apply transition-all;
+  height: 2rem;
+  width: 2rem;
+  margin-right: 0.5rem;
+}
+
+.icon:hover {
+  filter: brightness(0.7);
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.header {
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.error {
+  margin-bottom: 1rem;
+}
