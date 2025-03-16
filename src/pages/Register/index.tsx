@@ -65,7 +65,14 @@ const Register = () => {
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      <form
+        onSubmit={handleSubmit(onSubmit, (errors) => {
+          if (errors?.image?.message) {
+            toast.error("נא להוסיף תמונה");
+          }
+        })}
+        className={styles.form}
+      >
         <h2 className={styles.title}>הרשמה</h2>
         <>
           <div className={styles.inputGroup}>
@@ -141,12 +148,14 @@ const Register = () => {
         </>
       </form>
       <div className={styles.imageContainer}>
-        <img
-          src={uploadImg}
-          alt="upload"
-          className={styles.upload}
+        <div
+          className={styles.imageUpload}
           onClick={() => imageRef.current?.click()}
-        />
+        >
+          <img src={uploadImg} alt="upload" className={styles.upload} />
+          הוספת תמונה
+        </div>
+
         <img
           src={previewImage || avatarImg}
           alt="preview"

@@ -56,7 +56,10 @@ const Post: React.FC<PostProps> = ({
           <img
             src={commentsIcon}
             className={Style.icon}
-            onClick={() => navigate(`/comments/${_id}`)}
+            onClick={() => {
+              setSelectedUserId(undefined);
+              navigate(`/comments/${_id}`);
+            }}
           />
           {comments?.length}
         </div>
