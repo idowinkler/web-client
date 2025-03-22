@@ -2,16 +2,24 @@ import { PostEntity } from "../../types/entities/post";
 import { UserEntity } from "../../types/entities/user";
 import { fetchRequest } from "../fetch";
 
-export const getPosts = async () => {
-  const posts = await fetchRequest(`/post`, { method: "GET" });
+export const getPosts = async (page: number) => {
+  const posts = await fetchRequest(`/post?page=${page}&limit=10`, {
+    method: "GET",
+  });
 
   return posts;
 };
 
-export const getPostsByUserId = async (userId: UserEntity["_id"]) => {
-  const posts = await fetchRequest(`/post?sender=${userId}`, {
-    method: "GET",
-  });
+export const getPostsByUserId = async (
+  page: number,
+  userId: UserEntity["_id"]
+) => {
+  const posts = await fetchRequest(
+    `/post?sender=${userId}&page=${page}&limit=10`,
+    {
+      method: "GET",
+    }
+  );
 
   return posts;
 };
