@@ -34,7 +34,7 @@ const Content: React.FC<ContentProps> = () => {
           dataLength={posts.length}
           next={fetchNextPage}
           hasMore={hasNextPage ?? false}
-          loader={<h4>Loading more posts...</h4>}
+          loader={<h4>טוען עוד פוסטים...</h4>}
           scrollableTarget="scrollableDiv"
         >
           {posts.map((post) => (
