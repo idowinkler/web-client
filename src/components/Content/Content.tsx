@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import Style from "./Content.module.css";
 import Post from "../Post/Post";
 import { useSelectedUserId } from "../SelectedUserContext/SelectedUserContext";
@@ -10,13 +11,16 @@ import UpsertPostModal from "../UpsertPostModal/UpsertPostModal";
 
 interface ContentProps {}
 
-const Content: React.FC<ContentProps> = ({}) => {
+const Content: React.FC<ContentProps> = () => {
   const [editedPostId, setEditedPostId] = useState<
     PostEntity["_id"] | undefined
   >(undefined);
   const { selectedUserId } = useSelectedUserId();
-  const { data: posts } = usePosts(selectedUserId);
+  const { data, fetchNextPage, hasNextPage } = usePosts(selectedUserId);
   const { data: selectedUser } = useSelectedUser();
+
+  // Flatten pages to a single array of posts
+  const posts = data?.pages.flatMap((page) => page.posts) || [];
 
   return (
     <div className={Style.content}>
@@ -24,12 +28,19 @@ const Content: React.FC<ContentProps> = ({}) => {
         {selectedUser ? `הפוסטים של ${selectedUser.firstName}` : "כל הפוסטים"}
         <AddPostButton />
       </div>
-      <div className={Style.scrollContainer}>
-        {posts &&
-          posts.map((post) => (
+
+      <div className={Style.scrollContainer} id="scrollableDiv">
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={fetchNextPage}
+          hasMore={hasNextPage ?? false}
+          loader={<h4>טוען עוד פוסטים...</h4>}
+          scrollableTarget="scrollableDiv"
+        >
+          {posts.map((post) => (
             <Post
-              _id={post._id}
               key={post._id}
+              _id={post._id}
               user_id={post.user_id}
               content={post.content}
               title={post.title}
@@ -38,9 +49,11 @@ const Content: React.FC<ContentProps> = ({}) => {
               image={post.image}
             />
           ))}
+        </InfiniteScroll>
       </div>
+
       <UpsertPostModal
-        post={posts?.find((post) => post._id === editedPostId)}
+        post={posts.find((post) => post._id === editedPostId)}
         isOpen={!!editedPostId}
         closeModal={() => setEditedPostId(undefined)}
       />
