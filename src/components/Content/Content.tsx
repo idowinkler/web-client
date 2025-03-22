@@ -8,6 +8,7 @@ import { useSelectedUser } from "../../utils/customHooks/queries/useSelectedUser
 import AddPostButton from "../AddPostButton/AddPostButton";
 import { PostEntity } from "../../types/entities/post";
 import UpsertPostModal from "../UpsertPostModal/UpsertPostModal";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 
 interface ContentProps {}
 
@@ -16,7 +17,8 @@ const Content: React.FC<ContentProps> = () => {
     PostEntity["_id"] | undefined
   >(undefined);
   const { selectedUserId } = useSelectedUserId();
-  const { data, fetchNextPage, hasNextPage } = usePosts(selectedUserId);
+  const { data, fetchNextPage, hasNextPage, isInitialLoading } =
+    usePosts(selectedUserId);
   const { data: selectedUser } = useSelectedUser();
 
   // Flatten pages to a single array of posts
@@ -30,26 +32,30 @@ const Content: React.FC<ContentProps> = () => {
       </div>
 
       <div className={Style.scrollContainer} id="scrollableDiv">
-        <InfiniteScroll
-          dataLength={posts.length}
-          next={fetchNextPage}
-          hasMore={hasNextPage ?? false}
-          loader={<h4>טוען עוד פוסטים...</h4>}
-          scrollableTarget="scrollableDiv"
-        >
-          {posts.map((post) => (
-            <Post
-              key={post._id}
-              _id={post._id}
-              user_id={post.user_id}
-              content={post.content}
-              title={post.title}
-              setEditedPostId={setEditedPostId}
-              likes={post.likes}
-              image={post.image}
-            />
-          ))}
-        </InfiniteScroll>
+        {isInitialLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <InfiniteScroll
+            dataLength={posts.length}
+            next={fetchNextPage}
+            hasMore={hasNextPage ?? false}
+            loader={<h4>טוען עוד פוסטים...</h4>}
+            scrollableTarget="scrollableDiv"
+          >
+            {posts.map((post) => (
+              <Post
+                key={post._id}
+                _id={post._id}
+                user_id={post.user_id}
+                content={post.content}
+                title={post.title}
+                setEditedPostId={setEditedPostId}
+                likes={post.likes}
+                image={post.image}
+              />
+            ))}
+          </InfiniteScroll>
+        )}
       </div>
 
       <UpsertPostModal
