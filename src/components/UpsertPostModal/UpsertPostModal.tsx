@@ -54,10 +54,11 @@ const UpsertPostModal: React.FC<UpsertPostModalProps> = ({
     if (post) {
       setValue("title", post.title);
       setValue("content", post.content);
-      setPreviewImage(post?.image ?? null);
     } else {
       reset();
     }
+
+    setPreviewImage(post?.image ?? null);
   }, [post, isOpen, setValue, reset]);
 
   const { addPostMutation, updatePostMutation } = usePostMutations();
@@ -105,48 +106,56 @@ const UpsertPostModal: React.FC<UpsertPostModalProps> = ({
         }
 
         <form onSubmit={handleSubmit(onSubmit)} className={Style.form}>
-          <div className={Style.inputGroup}>
-            <label htmlFor="title">כותרת</label>
-            <input
-              type="text"
-              id="title"
-              {...register("title")}
-              className={Style.input}
-            />
-            {errors.title && <p>{errors.title.message as string}</p>}
-          </div>
-          <div className={Style.inputGroup}>
-            <label htmlFor="title">תוכן</label>
-            <textarea
-              id="content"
-              {...register("content")}
-              className={Style.input}
-            />
-            {errors.content && <p>{errors.content.message as string}</p>}
-          </div>
-          <div className={Style.inputGroup}>
-            <label htmlFor="image">תמונה</label>
-            {previewImage && (
-              <img src={previewImage} alt="Preview" className={Style.image} />
-            )}
-            <img
-              src={uploadImg}
-              alt="upload"
-              className={Style.upload}
-              onClick={() => imageRef.current?.click()}
-            />
-            <input
-              {...rest}
-              ref={(e) => {
-                ref(e);
-                imageRef.current = e;
-              }}
-              type="file"
-              name="image"
-              id="image"
-              style={{ display: "none" }}
-            />
-          </div>
+            <div className={Style.inputGroup}>
+              <label htmlFor="title">כותרת</label>
+              <input
+                type="text"
+                id="title"
+                {...register("title")}
+                className={Style.input}
+              />
+              {errors.title && <p>{errors.title.message as string}</p>}
+            </div>
+            <div className={Style.inputGroup}>
+              <label htmlFor="title">תוכן</label>
+              <textarea
+                id="content"
+                {...register("content")}
+                className={Style.input}
+              />
+              {errors.content && <p>{errors.content.message as string}</p>}
+            </div>
+            <div className={Style.inputGroup}>
+              <label htmlFor="image">תמונה</label>
+              <div className={Style.imageContainer}>
+                <img
+                  src={uploadImg}
+                  alt="upload"
+                  className={Style.upload}
+                  onClick={() => imageRef.current?.click()}
+                />
+                {previewImage && (
+                  <img
+                    src={previewImage}
+                    alt="Preview"
+                    className={Style.image}
+                  />
+                )}
+              </div>
+
+              <input
+                {...rest}
+                ref={(e) => {
+                  ref(e);
+                  imageRef.current = e;
+                }}
+                type="file"
+                name="image"
+                id="image"
+                style={{ display: "none" }}
+              />
+            </div>
+
           <div className={Style.buttonContainer}>
             <button type="submit" className={Style.button}>
               שמור

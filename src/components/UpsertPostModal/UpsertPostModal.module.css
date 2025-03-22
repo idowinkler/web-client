@@ -85,10 +85,23 @@ textarea::-webkit-scrollbar-thumb {
 }
 
 .upload {
+  @apply transition-all;
   width: 40px;
   height: 40px;
   cursor: pointer;
-  background: white;
+  background: #b8b2a7;
   border-radius: 10px;
   margin-top: 1rem;
+}
+.upload:hover {
+  background: #a19b90;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.formInnerContainer:last-child {
+  margin-bottom: 0;
 }
